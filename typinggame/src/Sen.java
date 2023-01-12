@@ -20,12 +20,11 @@ import javax.sound.sampled.Clip;
 /**
  * @author Magdalena Gerszewska
  */
-
 public class Sen extends JFrame {
 
     private int liczbaZyc = 3;
 
-    JButton b = null;
+    JButton b, b1, b2, b3, b4 = null;
     JPanel p = null;
     JTextField tf = null;
     JLabel label = null;
@@ -34,7 +33,7 @@ public class Sen extends JFrame {
     WordRun word1 = null;
     WordRun word2 = null;
     WordRun word3 = null;
-    
+
     /**
      * Dźwięki wykorzystane w grze
      */
@@ -48,7 +47,7 @@ public class Sen extends JFrame {
     private Sound bgDzwiek = new Sound("Dzwieki/back.wav");
 
     boolean przegrana = false;
-    
+
     /**
      * Klasa do odtwarzania dźwięków
      */
@@ -86,15 +85,48 @@ public class Sen extends JFrame {
     /**
      * Główny konstruktor klasy
      */
-    public Sen() {
+    public Sen() throws IOException {
         super("Sen króla Sejonga");
         setSize(1280, 800);
         setLayout(new BorderLayout());
         bgDzwiek.playOver();
 
-        b = new JButton("Start");
+        BufferedImage bIcon = ImageIO.read(new File("Obrazy/level1.png"));
+        BufferedImage b1Icon = ImageIO.read(new File("Obrazy/level2.png"));
+        BufferedImage b2Icon = ImageIO.read(new File("Obrazy/level3.png"));
+        BufferedImage b3Icon = ImageIO.read(new File("Obrazy/level4.png"));
+        BufferedImage b4Icon = ImageIO.read(new File("Obrazy/level5.png"));
+
+        JPanel p3 = new JPanel();
+        p3.setLayout(new BorderLayout());
+        b = new JButton(new ImageIcon(bIcon));
+        b1 = new JButton(new ImageIcon(b1Icon));
+        b2 = new JButton(new ImageIcon(b2Icon));
+        b3 = new JButton(new ImageIcon(b3Icon));
+        b4 = new JButton(new ImageIcon(b4Icon));
         b.addActionListener(new ButtonHandler());
-        add(b, BorderLayout.NORTH);
+        b1.addActionListener(new ButtonHandler());
+        b2.addActionListener(new ButtonHandler());
+        b3.addActionListener(new ButtonHandler());
+        b4.addActionListener(new ButtonHandler());
+        add(p3, BorderLayout.NORTH);
+        p3.setLayout(new BoxLayout(p3, BoxLayout.LINE_AXIS));
+        p3.add(b);
+        p3.add(b1);
+        p3.add(b2);
+        p3.add(b3);
+        p3.add(b4);
+
+        b.setBorder(BorderFactory.createEmptyBorder());
+        b.setContentAreaFilled(false);
+        b1.setBorder(BorderFactory.createEmptyBorder());
+        b1.setContentAreaFilled(false);
+        b2.setBorder(BorderFactory.createEmptyBorder());
+        b2.setContentAreaFilled(false);
+        b3.setBorder(BorderFactory.createEmptyBorder());
+        b3.setContentAreaFilled(false);
+        b4.setBorder(BorderFactory.createEmptyBorder());
+        b4.setContentAreaFilled(false);
 
         p = new DrawPanel();
         p.setPreferredSize(new Dimension(300, 300));
@@ -111,30 +143,6 @@ public class Sen extends JFrame {
         p2.add(label);
 
         add(p2, BorderLayout.SOUTH);
-        
-        
-        /**
-        * Wczytanie listy słów z pliku tekstowego
-        */
-
-        FileInputStream textFile;
-        BufferedReader readWords;
-
-        wordlist = new ArrayList<>();
-
-        try {
-            textFile = new FileInputStream("level 3.txt");
-            readWords = new BufferedReader(new InputStreamReader(textFile));
-
-            String line = readWords.readLine();
-            while (line != null) {
-                wordlist.add(line);
-                line = readWords.readLine();
-            }
-            textFile.close();
-        } catch (IOException e) {
-
-        }
 
         word1 = new WordRun();
         word2 = new WordRun();
@@ -220,7 +228,6 @@ public class Sen extends JFrame {
     /**
      * Klasa wywołująca słowa na ekranie
      */
-    
     class WordRun implements Runnable {
 
         String st = null;
@@ -235,7 +242,7 @@ public class Sen extends JFrame {
                     if ((st == null) || (posy == p.getHeight())) {
                         rand = new Random();
                         Thread.currentThread().sleep(rand.nextInt(1000));
-                        st = wordlist.get(rand.nextInt(56));
+                        st = wordlist.get(rand.nextInt(100));
                         posy = 0;
                         do {
                             posx = rand.nextInt(p.getWidth());
@@ -250,34 +257,162 @@ public class Sen extends JFrame {
 
             } catch (Exception e) {
             }
-
         }
-
     }
-    
+
     /**
      * Klasa odpowiadająca naciśnięciu przycisku start
      */
-
     class ButtonHandler implements ActionListener {
-
+        
         public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand() == "Start") {
+            if (e.getSource().equals(b)) {
                 Thread t1 = new Thread(word1);
                 Thread t2 = new Thread(word2);
                 Thread t3 = new Thread(word3);
+                word1.st = null;
+                word2.st = null;
+                word3.st = null;
                 t1.start();
                 t2.start();
                 t3.start();
-            }
+                FileInputStream textFile;
+                BufferedReader readWords;
 
+                wordlist = new ArrayList<>();
+
+                try {
+                    textFile = new FileInputStream("level 1.txt");
+                    readWords = new BufferedReader(new InputStreamReader(textFile));
+
+                    String line = readWords.readLine();
+                    while (line != null) {
+                        wordlist.add(line);
+                        line = readWords.readLine();
+                    }
+                    textFile.close();
+                } catch (IOException ev) {
+                }
+            }
+            if (e.getSource().equals(b1)) {
+                Thread t1 = new Thread(word1);
+                Thread t2 = new Thread(word2);
+                Thread t3 = new Thread(word3);
+                word1.st = null;
+                word2.st = null;
+                word3.st = null;
+                t1.start();
+                t2.start();
+                t3.start();
+                FileInputStream textFile;
+                BufferedReader readWords;
+
+                wordlist = new ArrayList<>();
+
+                try {
+                    textFile = new FileInputStream("level 2.txt");
+                    readWords = new BufferedReader(new InputStreamReader(textFile));
+
+                    String line = readWords.readLine();
+                    while (line != null) {
+                        wordlist.add(line);
+                        line = readWords.readLine();
+                    }
+                    textFile.close();
+                } catch (IOException ev) {
+                }
+            }
+            if (e.getSource().equals(b2)) {
+                Thread t1 = new Thread(word1);
+                Thread t2 = new Thread(word2);
+                Thread t3 = new Thread(word3);
+                
+                word1.st = null;
+                word2.st = null;
+                word3.st = null;
+                t1.start();
+                t2.start();
+                t3.start();
+                FileInputStream textFile;
+                BufferedReader readWords;
+
+                wordlist = new ArrayList<>();
+
+                try {
+                    textFile = new FileInputStream("level 3.txt");
+                    readWords = new BufferedReader(new InputStreamReader(textFile));
+
+                    String line = readWords.readLine();
+                    while (line != null) {
+                        wordlist.add(line);
+                        line = readWords.readLine();
+                    }
+                    textFile.close();
+                } catch (IOException ev) {
+                }
+            }
+            if (e.getSource().equals(b3)) {
+                Thread t1 = new Thread(word1);
+                Thread t2 = new Thread(word2);
+                Thread t3 = new Thread(word3);
+                word1.st = null;
+                word2.st = null;
+                word3.st = null;
+                t1.start();
+                t2.start();
+                t3.start();
+                FileInputStream textFile;
+                BufferedReader readWords;
+
+                wordlist = new ArrayList<>();
+
+                try {
+                    textFile = new FileInputStream("level 4.txt");
+                    readWords = new BufferedReader(new InputStreamReader(textFile));
+
+                    String line = readWords.readLine();
+                    while (line != null) {
+                        wordlist.add(line);
+                        line = readWords.readLine();
+                    }
+                    textFile.close();
+                } catch (IOException ev) {
+                }
+            }
+            if (e.getSource().equals(b4)) {
+                Thread t1 = new Thread(word1);
+                Thread t2 = new Thread(word2);
+                Thread t3 = new Thread(word3);
+                word1.st = null;
+                word2.st = null;
+                word3.st = null;
+                t1.start();
+                t2.start();
+                t3.start();
+                FileInputStream textFile;
+                BufferedReader readWords;
+
+                wordlist = new ArrayList<>();
+
+                try {
+                    textFile = new FileInputStream("level 5.txt");
+                    readWords = new BufferedReader(new InputStreamReader(textFile));
+
+                    String line = readWords.readLine();
+                    while (line != null) {
+                        wordlist.add(line);
+                        line = readWords.readLine();
+                    }
+                    textFile.close();
+                } catch (IOException ev) {
+                }
+            }
         }
     }
-    
+
     /**
      * Klasa sprawdzająca, czy słowo zostało poprawnie wpisane
      */
-
     class ListenText implements DocumentListener {
 
         public void changedUpdate(DocumentEvent e) {
@@ -310,12 +445,11 @@ public class Sen extends JFrame {
             }
         }
     }
-    
+
     /**
      * Uruchomienie gry
      */
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Sen ap = new Sen();
     }
 }
